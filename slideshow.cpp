@@ -1,5 +1,15 @@
+#include <signal.h>
+
 #include "ISSOptions.h"
 #include "ISSImages.h"
+
+static bool running = true;
+
+void handle_quit(int signum)
+{
+	printf("Quitting!\n");
+	running = false;
+}
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +22,14 @@ int main(int argc, char *argv[])
 	}
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_NOPARACHUTE);
+
+	if (signal(SIGINT, handle_quit) == SIG_ERR)
+	{
+		SDL_Quit();
+		fprintf(stderr, "Error setting up signal handler!\n");
+		return -1;
+	}
+
     Uint32 flags = SDL_SWSURFACE;
 	if ( options.getFullscreen() )
 		flags |= SDL_FULLSCREEN;
@@ -31,7 +49,7 @@ int main(int argc, char *argv[])
 
 	ISSImages images(sdl, *options.getPath(), options.getRecursive());
 
-	while (true)
+	while (running)
 	{
 		images.loadNextImage();
 		images.displayImage();
