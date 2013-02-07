@@ -64,7 +64,15 @@ int ISSImages::loadFilenames(const std::string directory, bool recursive)
 		}
 		// We're just a file
 		else
-			filenames.push_back(full_filename);
+		{
+			std::string jpg(".jpg");
+			std::string jpeg(".jpeg");
+			//Check that it's a .jpg or .jpeg
+			if ( full_filename.find(jpg, 0) != -1 || full_filename.find(jpeg, 0) != -1 )
+				filenames.push_back(full_filename);
+			else
+				std::cout << "Skipping non-JPG file " << full_filename << std::endl;
+		}
 	}
 	closedir(dir);
 
