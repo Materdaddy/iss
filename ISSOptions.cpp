@@ -3,7 +3,8 @@
 ISSOptions::ISSOptions(int argc, char* argv[]) :
 	recursive(false),
 	verbose(false),
-	speed(5)
+	speed(5),
+	fullscreen(false)
 {
 	int c;
 	int digit_optind = 0;
@@ -13,21 +14,23 @@ ISSOptions::ISSOptions(int argc, char* argv[]) :
 		OPT_PATH = 1,
 		OPT_RECURSIVE,
 		OPT_VERBOSE,
-		OPT_CREATE
+		OPT_SPEED,
+		OPT_FULLSCREEN
 	};
 
 	while (1) {
 		int this_option_optind = optind ? optind : 1;
 		int option_index = 0;
 		static struct option long_options[] = {
-			{"path",      required_argument, 0,  OPT_PATH },
-			{"recursive", no_argument,       0,  OPT_RECURSIVE },
-			{"verbose",   no_argument,       0,  OPT_VERBOSE },
-			{"speed",     required_argument, 0,  OPT_CREATE },
-			{0,           0,                 0,  0 }
+			{"path",       required_argument, 0,  OPT_PATH },
+			{"recursive",  no_argument,       0,  OPT_RECURSIVE },
+			{"verbose",    no_argument,       0,  OPT_VERBOSE },
+			{"speed",      required_argument, 0,  OPT_SPEED },
+			{"fullscreen", no_argument,       0,  OPT_FULLSCREEN },
+			{0,            0,                 0,  0 }
 		};
 
-		c = getopt_long(argc, argv, "p:rvs:",
+		c = getopt_long(argc, argv, "p:rvs:f",
 						long_options, &option_index);
 		if (c == -1)
 			break;
@@ -52,8 +55,15 @@ ISSOptions::ISSOptions(int argc, char* argv[]) :
 				break;
 
 			case 's':
+			case OPT_SPEED:
 				printf("Speed: '%s'\n", optarg);
 				setSpeed(atoi(optarg));
+				break;
+
+			case 'f':
+			case OPT_FULLSCREEN:
+				printf("Fullscreen\n");
+				setFullscreen(true);
 				break;
 
 			default:

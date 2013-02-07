@@ -28,11 +28,16 @@ public:
 	void setSpeed(int speed) { this->speed = speed; }
 	int getSpeed() { return this->speed; }
 
+	//FULLSCREEN
+	void setFullscreen(bool fullscreen) { this->fullscreen = fullscreen; }
+	bool getFullscreen() { return this->fullscreen; }
+
 private:
 	std::string *path;
 	bool recursive;
 	bool verbose;
 	int speed;
+	int fullscreen;
 };
 
 #endif //__ISS_OPTIONS__

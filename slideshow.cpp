@@ -13,11 +13,10 @@ int main(int argc, char *argv[])
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_NOPARACHUTE);
     Uint32 flags = SDL_SWSURFACE;
-#ifdef CHUMBY_COMPILE
+	if ( options.getFullscreen() )
 		flags |= SDL_FULLSCREEN;
-#else
+	else
 		flags |= SDL_RESIZABLE;
-#endif
 	SDL_Surface *sdl = NULL;
 
 	sdl = SDL_SetVideoMode(800, 600, 32, flags);
